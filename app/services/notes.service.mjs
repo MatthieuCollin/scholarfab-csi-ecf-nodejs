@@ -14,6 +14,16 @@ async function createNote(
   });
 }
 
+async function deleteNote(db, { note_id }) {
+  return new Promise(async (resolve, reject) => {
+    const stmt = db.prepare("delete from notes where notes.id = ?");
+    stmt.run([note_id], (err, data) => {
+      const p = err ? err : data;
+      (err ? reject : resolve)(p);
+    });
+  });
+}
+
 export async function modifyNote(req, res) {
   const { app, method } = req;
 
@@ -23,6 +33,19 @@ export async function modifyNote(req, res) {
     res.render("note_form", {
       response: await getNote(db, req.query.note_id),
     });
+  } catch (err) {
+    res.redirect("/error", err);
+  }
+}
+
+export async function handleDeleteNote(req, res) {
+  const { app, method } = req;
+
+  const db = app.get("g:db");
+
+  try {
+    let response = await deleteNote(db, { note_id: req.params.id });
+    res.redirect("/note");
   } catch (err) {
     res.redirect("/error", err);
   }

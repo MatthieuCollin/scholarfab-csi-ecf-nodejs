@@ -13,6 +13,7 @@
         <td><%= response[i].title %></td>
         <td><%= response[0].lastname%> <%= response[0].firstname%></td>
         <td><a href="/note?note_id=<%= response[i].id%>">Voir</a></td>
+        <td><a href="/note/delete/<%= response[i].id%>">Supprimer</a></td>
       </tr>
       <% } %>
     </table>
