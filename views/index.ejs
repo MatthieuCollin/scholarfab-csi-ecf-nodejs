@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Bonjour <%= user ? `${user.firstname}` : '' %> !</h1>
     <p>
-        <% if(user) { %>
-            <a href="/logout">Logout</a>
-        <% } else { %>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-        <% } %>
+      <% if(user) { %>
+      <a href="/note">Voir mes notes</a>
+      <a href="/logout">Logout</a>
+      <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <% } %>
     </p>
-</body>
+  </body>
 </html>

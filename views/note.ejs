@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Mes notes !</h1>
+    <table>
+      <% for(var i=0; i < response.length; i++) { %>
+      <tr>
+        <td><%= response[i].title %></td>
+        <td><%= response[0].lastname%> <%= response[0].firstname%></td>
+        <td><a href="/note?note_id=<%= response[i].id%>">Voir</a></td>
+      </tr>
+      <% } %>
+    </table>
+
+    <a href="/note/add">Ajouter</a>
+    <a href="../"> retour</a>
+  </body>
+</html>
