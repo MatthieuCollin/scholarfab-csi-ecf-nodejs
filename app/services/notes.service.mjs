@@ -24,18 +24,36 @@ async function deleteNote(db, { note_id }) {
   });
 }
 
-export async function modifyNote(req, res) {
+export async function modifyNoteView(req, res) {
   const { app, method } = req;
 
   const db = app.get("g:db");
 
   try {
     res.render("note_form", {
-      response: await getNote(db, req.query.note_id),
+      response: await getNote(db, req.params.id),
     });
   } catch (err) {
     res.redirect("/error", err);
   }
+}
+
+async function modifyNote(
+  db,
+  { title, content, owner, created_at, updated_at },
+  note_id
+) {
+  return new Promise(async (resolve, reject) => {
+    const stmt = db.prepare(
+      "UPDATE notes(title, content, owner_id, created_at, updated_at) VALUES (?,?,?,?,?) where notes.id = " +
+        note_id +
+        ";"
+    );
+    stmt.run([title, content, owner, created_at, updated_at], (err, data) => {
+      const p = err ? err : data;
+      (err ? reject : resolve)(p);
+    });
+  });
 }
 
 export async function handleDeleteNote(req, res) {
@@ -61,11 +79,24 @@ export async function handleCreateNote(req, res) {
 
   //   console.log({ title, content, owner, date, date });
 
-  try {
-    await createNote(db, { title, content, owner, date, date });
-    res.redirect("/note");
-  } catch (err) {
-    res.redirect("/error", err);
+  if (method == "PUT" && req.params.id) {
+    try {
+      await modifyNote(
+        db,
+        { title, content, owner, date, date },
+        req.params.id
+      );
+      res.redirect("/note");
+    } catch (err) {
+      res.redirect("/error", err);
+    }
+  } else if (method == "POST") {
+    try {
+      await createNote(db, { title, content, owner, date, date });
+      res.redirect("/note");
+    } catch (err) {
+      res.redirect("/error", err);
+    }
   }
 }
 

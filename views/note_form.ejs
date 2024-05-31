@@ -7,18 +7,25 @@
   </head>
   <body>
     <h1>Ajouter une note</h1>
-    <form action="/note" method="POST">
+    <form action="/note" method="<%= response ? 'PUT' : 'POST' %>">
       <div>
         <label for="title">Titre</label>
-        <input name="title" type="text" />
+        <input
+          name="title"
+          type="text"
+          defaultValue="<%= response ? response[0].title : '' %>"
+        />
       </div>
       <br />
       <div>
         <label for="content">Contenu</label>
-        <textarea name="content"></textarea>
+        <textarea
+          defaultValue="<%= response ? response[0].content : '' %>"
+          name="content"
+        ></textarea>
       </div>
       <button type="submit">Sauvegarde</button>
     </form>
-    <a href="./">annuler</a>
+    <a href="/note">annuler</a>
   </body>
 </html>
